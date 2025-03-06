@@ -1,0 +1,128 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pokemon API - Auth Endpoints",
+    "version": "1.0.0",
+    "description": "Документація API для ендпойнтів авторизації та реєстрації"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Локальний сервер"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Реєстрація нового користувача",
+        "description": "Реєструє нового користувача. Повертає унікальний nonce для підтвердження через Metamask.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "example": "0x0abcd1234..."
+                  }
+                },
+                "required": [
+                  "address"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Nonce успішно згенеровано",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nonce": {
+                      "type": "string",
+                      "example": "5f4dcc3b5aa765d61d8327deb882cf99"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некоректний запит. Адреса не вказана."
+          },
+          "500": {
+            "description": "Помилка сервера."
+          }
+        }
+      }
+    },
+    "/api/auth/verify": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Вхід користувача",
+        "description": "Отримання токену для авторизації через підпис із Metamask.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string",
+                    "example": "0x0abcd1234..."
+                  },
+                  "signature": {
+                    "type": "string",
+                    "example": "0xabcdef123456..."
+                  }
+                },
+                "required": [
+                  "address",
+                  "signature"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Успішний вхід",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Невірний підпис або користувача не знайдено."
+          },
+          "400": {
+            "description": "Некоректний запит. Відсутня адреса або підпис."
+          },
+          "500": {
+            "description": "Помилка сервера."
+          }
+        }
+      }
+    }
+  }
+}
