@@ -5,9 +5,7 @@ const fs = require("node:fs");
 const data = require("../assets/pokedex.json");
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI, {
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(process.env.MONGO_URI, {});
         console.log("Connected до MongoDB");
     } catch (error) {
         console.error("Error connected to DB:", error);
@@ -141,6 +139,7 @@ const initDB = async () => {
 
     async function syncPokedexToDatabase() {
         try {
+            console.log("sync start");
 
             const cleanedPokemon = data.map((pokemon) => {
                 return {
