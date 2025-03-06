@@ -33,8 +33,10 @@ const server = http.createServer(app);
 const io = configureSocket(server);
 
 const PORT = process.env.PORT || 5000;
-server.listen(5001, () => {
-    console.log("Socket port: 3000");
-});
-app.listen(PORT, () => console.log(`HTTP port ${PORT}`));
+
+// server.listen(5002, () => {
+//     console.log("Socket port: 3000");
+// });
+// app.listen(PORT, () => console.log(`HTTP port ${PORT}`));
+server.listen(PORT, () => console.log(`HTTP/socket port ${PORT}`));
 
